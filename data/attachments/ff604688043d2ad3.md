@@ -1,0 +1,132 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: product_testing/product.spec.js >> Product Details Module >> Verify filter options visibility
+- Location: tests/product_testing/product.spec.js:108:3
+
+# Error details
+
+```
+Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.nykaa.com/
+Call log:
+  - navigating to "https://www.nykaa.com/", waiting until "domcontentloaded"
+
+```
+
+# Test source
+
+```ts
+  1   | const { test, expect } = require('@playwright/test');
+  2   | 
+  3   | test.describe('Product Details Module', () => {
+  4   | 
+  5   |   test.beforeEach(async ({ page }) => {
+  6   | 
+> 7   |     await page.goto('https://www.nykaa.com', {
+      |                ^ Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.nykaa.com/
+  8   | 
+  9   |       waitUntil: 'domcontentloaded',
+  10  |       
+  11  |       timeout: 60000
+  12  |     });
+  13  | 
+  14  |     const searchBox = page.locator('input[placeholder*="Search"]');
+  15  | 
+  16  |     await searchBox.fill('lipstick');
+  17  | 
+  18  |     await page.keyboard.press('Enter');
+  19  | 
+  20  |     await page.waitForLoadState('domcontentloaded');
+  21  | 
+  22  |   });
+  23  | 
+  24  |   // Test 1 - Verify product cards are visible
+  25  | 
+  26  |   test('Verify product cards visibility', async ({ page }) => {
+  27  | 
+  28  |     const products = page.locator('img:visible');
+  29  | 
+  30  |     await expect(products.first()).toBeVisible();
+  31  | 
+  32  |   });
+  33  | 
+  34  |   // Test 2 - Verify product title visibility
+  35  | 
+  36  |   test('Verify product title visibility', async ({ page }) => {
+  37  | 
+  38  |     await expect(page.locator('body')).toContainText(/lipstick|makeup|lips/i);
+  39  | 
+  40  |   });
+  41  | 
+  42  |   // Test 3 - Verify product price visibility
+  43  | 
+  44  |   test('Verify product price visibility', async ({ page }) => {
+  45  | 
+  46  |     await page.waitForLoadState('domcontentloaded');
+  47  | 
+  48  |     await expect(page.locator('body')).toContainText('₹');
+  49  | 
+  50  |   });
+  51  | 
+  52  |   // Test 4 - Verify wishlist button visibility
+  53  | 
+  54  |   test('Verify wishlist button visibility', async ({ page }) => {
+  55  | 
+  56  |     const wishlist = page.locator('button').nth(0);
+  57  | 
+  58  |     await expect(wishlist).toBeVisible();
+  59  | 
+  60  |   });
+  61  | 
+  62  |   // Test 5 - Verify product image visibility
+  63  | 
+  64  |   test('Verify product image visibility', async ({ page }) => {
+  65  | 
+  66  |     const images = page.locator('img:visible');
+  67  | 
+  68  |     await expect(images.first()).toBeVisible();
+  69  | 
+  70  |   });
+  71  | 
+  72  |   // Test 6 - Verify ratings visibility
+  73  | 
+  74  |   test('Verify ratings visibility', async ({ page }) => {
+  75  | 
+  76  |     test.setTimeout(60000);
+  77  | 
+  78  |     await expect(page.locator('body')).toContainText(/₹|Wishlist|Add to Bag/i);
+  79  |     
+  80  |   });
+  81  | 
+  82  |   // Test 7 - Verify discount visibility
+  83  | 
+  84  |   test('Verify discount visibility', async ({ page }) => {
+  85  | 
+  86  |     await expect(page.locator('body')).toContainText(/Off|OFF|%/);
+  87  | 
+  88  |   });
+  89  | 
+  90  |   // Test 8 - Verify bestseller tag visibility
+  91  | 
+  92  |   test('Verify bestseller tag visibility', async ({ page }) => {
+  93  | 
+  94  |     await expect(page.locator('body')).toContainText(/BESTSELLER|bestseller/i);
+  95  | 
+  96  |   });
+  97  | 
+  98  |   // Test 9 - Verify sorting option visibility
+  99  | 
+  100 |   test('Verify sorting option visibility', async ({ page }) => {
+  101 | 
+  102 |     await expect(page.locator('body')).toContainText(/Sort By/i);
+  103 | 
+  104 |   });
+  105 | 
+  106 |   // Test 10 - Verify filter options visibility
+  107 |   
+```
