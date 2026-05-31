@@ -1,0 +1,2 @@
+Checkout module started
+Checkout module completed

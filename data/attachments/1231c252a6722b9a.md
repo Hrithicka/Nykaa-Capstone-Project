@@ -1,0 +1,226 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: cart_testing/cart.spec.js >> Cart Module >> Verify product price is visible before cart action
+- Location: tests/cart_testing/cart.spec.js:114:3
+
+# Error details
+
+```
+Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.nykaa.com/lips/c/15
+Call log:
+  - navigating to "https://www.nykaa.com/lips/c/15", waiting until "domcontentloaded"
+
+```
+
+# Test source
+
+```ts
+  16  | 
+  17  |     console.log('Cart Module Completed');
+  18  | 
+  19  |   });
+  20  | 
+  21  |   test.beforeEach(async ({ page }) => {
+  22  | 
+  23  |     page.on('dialog', async dialog => {
+  24  | 
+  25  |       await dialog.accept();
+  26  | 
+  27  |     });
+  28  | 
+  29  |   });
+  30  | 
+  31  | 
+  32  |   // Test 1 - Verify Nykaa homepage loads successfully
+  33  | 
+  34  |   test('Verify Nykaa homepage loads successfully', async ({ page }) => {
+  35  | 
+  36  |     await page.goto(homeUrl, {
+  37  | 
+  38  |       waitUntil: 'domcontentloaded',
+  39  | 
+  40  |       timeout: 60000
+  41  | 
+  42  |     });
+  43  | 
+  44  |     await expect(page.locator('body')).toBeVisible();
+  45  | 
+  46  |   });
+  47  | 
+  48  |   // Test 2 - Verify homepage URL is valid
+  49  | 
+  50  |   test('Verify homepage URL is valid', async ({ page }) => {
+  51  | 
+  52  |     await page.goto(homeUrl, {
+  53  | 
+  54  |       waitUntil: 'domcontentloaded',
+  55  | 
+  56  |       timeout: 60000
+  57  | 
+  58  |     });
+  59  | 
+  60  |     await expect(page).toHaveURL(/nykaa/i);
+  61  | 
+  62  |   });
+  63  | 
+  64  |   // Test 3 - Verify cart or bag text availability on homepage
+  65  | 
+  66  |   test('Verify cart or bag text availability on homepage', async ({ page }) => {
+  67  | 
+  68  |     await page.goto(homeUrl, {
+  69  | 
+  70  |       waitUntil: 'domcontentloaded',
+  71  | 
+  72  |       timeout: 60000
+  73  | 
+  74  |     });
+  75  | 
+  76  |     await expect(page.locator('body')).toContainText(/Bag|Cart|Nykaa/i);
+  77  | 
+  78  |   });
+  79  | 
+  80  |   // Test 4 - Verify lips category page loads successfully
+  81  | 
+  82  |   test('Verify lips category page loads successfully', async ({ page }) => {
+  83  | 
+  84  |     await page.goto(lipsUrl, {
+  85  | 
+  86  |       waitUntil: 'domcontentloaded',
+  87  | 
+  88  |       timeout: 60000
+  89  | 
+  90  |     });
+  91  | 
+  92  |     await expect(page).toHaveURL(/lips/i);
+  93  | 
+  94  |   });
+  95  | 
+  96  |   // Test 5 - Verify product listing is visible before cart action
+  97  | 
+  98  |   test('Verify product listing is visible before cart action', async ({ page }) => {
+  99  | 
+  100 |     await page.goto(lipsUrl, {
+  101 | 
+  102 |       waitUntil: 'domcontentloaded',
+  103 | 
+  104 |       timeout: 60000
+  105 | 
+  106 |     });
+  107 | 
+  108 |     await expect(page.locator('body')).toContainText(/Lipstick|Lip|Product/i);
+  109 | 
+  110 |   });
+  111 | 
+  112 |   // Test 6 - Verify product price is visible before cart action
+  113 | 
+  114 |   test('Verify product price is visible before cart action', async ({ page }) => {
+  115 | 
+> 116 |     await page.goto(lipsUrl, {
+      |                ^ Error: page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.nykaa.com/lips/c/15
+  117 | 
+  118 |       waitUntil: 'domcontentloaded',
+  119 | 
+  120 |       timeout: 60000
+  121 | 
+  122 |     });
+  123 | 
+  124 |     await expect(page.locator('body')).toContainText('₹');
+  125 | 
+  126 |   });
+  127 | 
+  128 |   // Test 7 - Verify Add to Bag related text is available
+  129 | 
+  130 |   test('Verify Add to Bag related text is available', async ({ page }) => {
+  131 | 
+  132 |     await page.goto(lipsUrl, {
+  133 | 
+  134 |       waitUntil: 'domcontentloaded',
+  135 | 
+  136 |       timeout: 60000
+  137 | 
+  138 |     });
+  139 | 
+  140 |     await expect(page.locator('body')).toContainText(/Add to Bag|Bag|Wishlist/i);
+  141 | 
+  142 |   });
+  143 | 
+  144 |   // Test 8 - Verify product image visibility before cart action
+  145 | 
+  146 |   test('Verify product image visibility before cart action', async ({ page }) => {
+  147 | 
+  148 |     await page.goto(lipsUrl, {
+  149 | 
+  150 |       waitUntil: 'domcontentloaded',
+  151 | 
+  152 |       timeout: 60000
+  153 | 
+  154 |     });
+  155 | 
+  156 |     const visibleImage = page.locator('img:visible').first();
+  157 | 
+  158 |     await expect(visibleImage).toBeVisible();
+  159 | 
+  160 |   });
+  161 | 
+  162 |   // Test 9 - Verify cart module content does not crash
+  163 | 
+  164 |   test('Verify cart module content does not crash', async ({ page }) => {
+  165 | 
+  166 |     await page.goto(homeUrl, {
+  167 | 
+  168 |       waitUntil: 'domcontentloaded',
+  169 | 
+  170 |       timeout: 60000
+  171 | 
+  172 |     });
+  173 | 
+  174 |     const content = await page.content();
+  175 | 
+  176 |     expect(content.length).toBeGreaterThan(500);
+  177 | 
+  178 |   });
+  179 | 
+  180 |   // Test 10 - Verify cart related flow using test steps
+  181 | 
+  182 |   test('Verify cart related flow using test steps', async ({ page }) => {
+  183 | 
+  184 |     await test.step('Open Nykaa homepage', async () => {
+  185 | 
+  186 |       await page.goto(homeUrl, {
+  187 | 
+  188 |         waitUntil: 'domcontentloaded',
+  189 | 
+  190 |         timeout: 60000
+  191 | 
+  192 |       });
+  193 | 
+  194 |       await expect(page.locator('body')).toBeVisible();
+  195 | 
+  196 |     });
+  197 | 
+  198 |     await test.step('Open lips category page', async () => {
+  199 | 
+  200 |       await page.goto(lipsUrl, {
+  201 | 
+  202 |         waitUntil: 'domcontentloaded',
+  203 | 
+  204 |         timeout: 60000
+  205 | 
+  206 |       });
+  207 | 
+  208 |       await expect(page.locator('body')).toContainText(/Lip|₹|Bag/i);
+  209 | 
+  210 |     });
+  211 | 
+  212 |   });
+  213 | 
+  214 |   // Test 11 - Verify cart module using soft assertions
+  215 | 
+  216 |   test('Verify cart module using soft assertions', async ({ page }) => {
+```
