@@ -315,23 +315,31 @@ test.describe('Responsive UI Module', () => {
 
   // Test 13 - Verify responsive page with polling assertion
 
-  test('Verify responsive page with polling assertion', async ({ page }) => {
+  test('Verify responsive page with polling assertion', async ({ browser }) => {
 
-    await page.setViewportSize({ width: 768, height: 1024 });
+    const context = await browser.newContext({
+      
+      viewport: { width: 768, height: 1024 }
+    
+    });
 
-    await page.reload({
+    const page = await context.newPage();
 
+    await page.goto(homeUrl, {
+    
       waitUntil: 'domcontentloaded',
-
+    
       timeout: 60000
-
+    
     });
 
     await expect.poll(async () => {
-
+    
       return await page.locator('body').isVisible();
-
+  
     }).toBeTruthy();
+
+    await context.close();
 
   });
 

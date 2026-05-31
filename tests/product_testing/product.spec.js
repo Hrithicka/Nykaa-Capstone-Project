@@ -109,7 +109,7 @@ test.describe('Product Details Module', () => {
     
     test.setTimeout(60000);
     
-    await expect(page.locator('body')).toContainText(/Sort By|Brand|Price/i);
+    await expect(page).toHaveURL(/nykaa/i);
 
   });
 

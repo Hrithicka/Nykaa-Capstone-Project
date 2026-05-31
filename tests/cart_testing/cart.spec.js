@@ -251,9 +251,16 @@ test.describe('Cart Module', () => {
 
   // Test 13 - Verify cart module works in tablet viewport
 
-  test('Verify cart module works in tablet viewport', async ({ page }) => {
+  test('Verify cart module works in tablet viewport', async ({ browser }) => {
 
-    await page.setViewportSize({ width: 768, height: 1024 });
+    const context = await browser.newContext({
+      viewport: {
+        width: 768,
+        height: 1024 
+      }
+    });
+
+    const page = await context.newPage();
 
     await page.goto(lipsUrl, {
 
@@ -264,6 +271,8 @@ test.describe('Cart Module', () => {
     });
 
     await expect(page.locator('body')).toBeVisible();
+
+    await context.close();
 
   });
 
