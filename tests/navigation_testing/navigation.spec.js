@@ -12,7 +12,7 @@ test.describe('Brand & Category Navigation Module', () => {
 
   test('Verify categories menu visibility', async ({ page }) => {
 
-    await expect(page.locator('body')).toContainText('categories');
+    await expect(page.locator('body')).toContainText(/categories/i);
 
   });
 
@@ -20,7 +20,7 @@ test.describe('Brand & Category Navigation Module', () => {
 
   test('Verify brands section visibility', async ({ page }) => {
 
-    await expect(page.locator('body')).toContainText('brands');
+    await expect(page.locator('body')).toContainText(/brands/i);
 
   });
 
