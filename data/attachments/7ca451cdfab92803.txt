@@ -1,2 +1,0 @@
-User Account and Profile Management Module Started
-User Account and Profile Management Module Completed
