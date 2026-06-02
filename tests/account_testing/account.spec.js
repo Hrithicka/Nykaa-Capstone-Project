@@ -92,7 +92,7 @@ test.describe('User Account and Profile Management Module', () => {
 
   test('Verify login page shows sign in related content', async ({ page }) => {
 
-    await page.goto('https://www.nykaa.com/login', {
+    await page.goto(loginUrl, {
 
       waitUntil: 'domcontentloaded',
 

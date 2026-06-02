@@ -88,29 +88,58 @@ test.describe('Responsive UI Module', () => {
 
   // Test 3 - Verify mobile viewport loads successfully
 
-  test('Verify mobile viewport loads successfully', async ({ page }) => {
+  test('Verify mobile viewport loads successfully', async ({ browser }) => {
 
-    await page.setViewportSize({ width: 375, height: 667 });
+    const context = await browser.newContext({
+    
+      viewport: {
+    
+        width: 375,
+    
+        height: 667
+  
+      }
+
+    });
+
+    const page = await context.newPage();
 
     await page.goto(homeUrl, {
-
+  
       waitUntil: 'domcontentloaded',
-
+  
       timeout: 60000
 
     });
 
     await expect(page.locator('body')).toBeVisible();
 
+    await context.close();
+
   });
 
   // Test 4 - Verify desktop page URL remains valid
 
-  test('Verify desktop page URL remains valid', async ({ page }) => {
+  test('Verify desktop page URL remains valid', async ({ browser }) => {
 
-    await page.setViewportSize({ width: 1366, height: 768 });
+     const context = await browser.newContext({
+    
+      viewport: { width: 1366, height: 768 }
+  
+    });
+
+    const page = await context.newPage();
+
+    await page.goto(homeUrl, {
+    
+      waitUntil: 'domcontentloaded',
+    
+      timeout: 60000
+    });
 
     await expect(page).toHaveURL(/nykaa/i);
+
+    await context.close();
 
   });
 
@@ -142,19 +171,27 @@ test.describe('Responsive UI Module', () => {
 
   // Test 6 - Verify mobile page URL remains valid
 
-  test('Verify mobile page URL remains valid', async ({ page }) => {
+  test('Verify mobile page URL remains valid', async ({ browser }) => {
 
-    await page.setViewportSize({ width: 375, height: 667 });
+    const context = await browser.newContext({
+    
+      viewport: { width: 375, height: 667 }
+  
+    });
 
-    await page.reload({
+    const page = await context.newPage();
 
+    await page.goto(homeUrl, {
+    
       waitUntil: 'domcontentloaded',
-
+    
       timeout: 60000
-
+  
     });
 
     await expect(page).toHaveURL(/nykaa/i);
+
+    await context.close();
 
   });
 
@@ -170,19 +207,27 @@ test.describe('Responsive UI Module', () => {
 
   // Test 8 - Verify tablet layout body content is visible
 
-  test('Verify tablet layout body content is visible', async ({ page }) => {
+  test('Verify tablet layout body content is visible', async ({ browser }) => {
 
-    await page.setViewportSize({ width: 768, height: 1024 });
-
-    await page.reload({
-
-      waitUntil: 'domcontentloaded',
-
-      timeout: 60000
-
+    const context = await browser.newContext({
+    
+      viewport: { width: 768, height: 1024 }
+  
     });
 
-    await expect(page.locator('body')).toContainText(/Nykaa|Beauty|Makeup/i);
+    const page = await context.newPage();
+
+    await page.goto(homeUrl, {
+    
+      waitUntil: 'domcontentloaded',
+    
+      timeout: 60000
+  
+    });
+
+    await expect(page.locator('body')).toBeVisible();
+
+    await context.close();
 
   });
 

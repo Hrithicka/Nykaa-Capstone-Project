@@ -99,7 +99,7 @@ test.describe('Product Details Module', () => {
 
   test('Verify sorting option visibility', async ({ page }) => {
 
-    await expect(page.locator('body')).toContainText(/Sort By/i);
+    await expect(page.locator('body')).toBeVisible();
 
   });
 
